@@ -7,7 +7,7 @@ import { ModalProvider } from "@/components/providers/ModalProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Nyaya Nidhi - Judiciary AI",
+  title: "Nyaya Nidhi",
   description: "Legal research made easy",
 };
 

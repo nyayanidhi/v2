@@ -17,7 +17,7 @@ export default async function Navbar() {
     <div className="bg-zinc-900">
       <div className="w-full flex justify-between py-3 px-6 bg-zinc-900 border-b-1 border-b-slate-100 shadow-xl container">
         <div className="flex items-center">
-          <div className="text-white font-bold text-xl">Nyayanidhi - Judiciary</div>
+          <div className="text-white font-bold text-xl">Nyayanidhi</div>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger>
