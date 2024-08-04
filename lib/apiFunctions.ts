@@ -196,9 +196,16 @@ export const chatGenerate = async (
   }
 
   const response = await axios.post("/api/chatRoute", body);
+  console.log(response);
 
   return {
-    success: true,
-    respdata: response as any,
+    success: response.data.success,
+    data: response.data.data as {
+      ai_response: string;
+      continue: boolean;
+      convo_key: string;
+      history_path: string;
+    },
+    status: response.status,
   };
 };

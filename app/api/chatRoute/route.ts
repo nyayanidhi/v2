@@ -10,20 +10,20 @@ export async function POST(req: Request) {
     return NextResponse.redirect("/login");
   }
 
-  const resp = await axios.post(
-    `${process.env.NEXT_NN_WEBSITE_URL}/moreinfo`,
-    body
-  );
-
-  if (resp.status !== 200) {
+  try {
+    const resp = await axios.post(
+      `${process.env.NEXT_NN_WEBSITE_URL}/moreinfo`,
+      body
+    );
+    return NextResponse.json({
+      success: true,
+      data: resp.data,
+    });
+  } catch (error) {
+    console.log(error);
     return NextResponse.json({
       success: false,
       data: "Oops! Something didnt work",
     });
   }
-
-  return NextResponse.json({
-    success: true,
-    data: resp.data,
-  });
 }
