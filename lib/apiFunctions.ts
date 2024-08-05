@@ -117,6 +117,7 @@ export const uploadApiFunction = async (
 
 export const sendMailApi = async () => {
   const storedResponse = localStorage.getItem("final_response");
+  const convo_key = localStorage.getItem("convo_key");
 
   if (!storedResponse) {
     console.log("No data found in localStorage");
@@ -145,11 +146,20 @@ export const sendMailApi = async () => {
     };
   }
 
-  let body = {
+  let body: {
+    session_id: string;
+    converse: boolean;
+    moreinfo_data: any;
+    convo_key?: any;
+  } = {
     session_id: parsedResp.session_id,
     converse: parsedResp.converse,
     moreinfo_data: parsedResp.stage2,
   };
+
+  if (parsedResp.converse) {
+    body.convo_key = convo_key ?? 0;
+  }
 
   console.log("Sending mail with body:", body);
 

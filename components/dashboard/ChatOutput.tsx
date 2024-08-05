@@ -44,7 +44,9 @@ const ChatOutput = () => {
       setConvoKey(data.convo_key ?? "");
       setHistoryPath(data.history_path);
       if (!data.continue) {
+        console.log(data.convo_key);
         localStorage.setItem("convo_key", data.convo_key);
+        console.log("Convo key saved to local storage");
         setTimeout(() => {
           increase(25);
           return;
