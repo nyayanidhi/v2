@@ -72,10 +72,10 @@ const SignUpForm = () => {
             </blockquote>
           </div>
         </div>
-        <div className="lg:p-8 flex items-center justify-center h-screen bg-white md:bg-zinc-900 md:text-white">
+        <div className="lg:p-8 flex items-center justify-center h-screen bg-white md:bg-zinc-900">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
-              <h1 className="text-2xl font-semibold tracking-tight">
+              <h1 className="text-2xl font-semibold tracking-tight md:text-white">
                 Create your account
               </h1>
               <p className="text-sm hidden md:text-zinc-200">

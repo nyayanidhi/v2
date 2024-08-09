@@ -1,70 +1,61 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-
+import { Button, buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 
-const LoginForm = () => {
-  const router = useRouter();
+const ResetComponent = () => {
   const supabase = createClientComponentClient();
+  const [data, setData] = useState<{
+    password: string;
+    confirmPassword: string;
+  }>({
+    password: "",
+    confirmPassword: "",
+  });
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [resetPassword, setResetPassword] = useState<boolean>(false);
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleSignIn = async () => {
-    setLoading(true);
-    try {
-      const res = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      router.refresh();
-      setEmail("");
-      setPassword("");
-    } catch (error) {
-      console.error("Error signing in:", error);
-    } finally {
-      setLoading(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const confirmPasswords = async () => {
+    const { password, confirmPassword } = data;
+    if (password !== confirmPassword)
+      return alert(`Your passwords are incorrect`);
+
+    const { data: resetData, error } = await supabase.auth.updateUser({
+      password: data.password,
+    });
+
+    if (resetData) {
+      router.push("/");
     }
+    if (error) console.log(error);
   };
 
-  const sendResetPassword = async () => {
-    setLoading(true);
-    try {
-      const { data: resetData, error } =
-        await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.href}reset`,
-        });
-      setEmail("");
-      console.log(resetData);
-      console.log(error);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setData((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
-
   return (
     <>
       <div className="container relative  h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
-          href="/signup"
+          href="/login"
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
           )}
         >
-          Sign Up
+          Back
         </Link>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
           <div className="absolute inset-0 bg-zinc-900" />
@@ -98,12 +89,10 @@ const LoginForm = () => {
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
-                {resetPassword
-                  ? "Reset your password"
-                  : "Login to your account"}
+                Reset you password
               </h1>
               <p className="text-sm text-muted-foreground">
-                Enter your email below
+                Enter password below
               </p>
             </div>
             <div className={cn("grid gap-6")}>
@@ -111,55 +100,40 @@ const LoginForm = () => {
                 <div className="grid gap-2">
                   <div className="grid gap-1">
                     <Label className="sr-only" htmlFor="email">
-                      Email
+                      Password
                     </Label>
                     <Input
-                      id="email"
-                      placeholder="name@example.com"
-                      type="email"
-                      onChange={(e) => setEmail(e.target.value)}
+                      type={showPassword ? "text" : "password"}
+                      value={data?.password}
+                      placeholder="Password"
+                      onChange={handleChange}
                       autoCapitalize="none"
                       autoComplete="email"
                       autoCorrect="off"
-                      disabled={loading}
                     />
                   </div>
-                  {!resetPassword && (
-                    <div className="grid gap-1">
-                      <Label className="sr-only" htmlFor="email">
-                        Password
-                      </Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        disabled={loading}
-                      />
-                    </div>
-                  )}
-
-                  <div
-                    className="relative flex justify-start text-xs uppercase"
-                    onClick={() => {
-                      setResetPassword((prev) => !prev);
-                    }}
-                  >
-                    <span className="bg-background py-1 text-muted-foreground hover:text-black hover:underline cursor-pointer">
-                      {resetPassword ? "Back to Sign In" : "Forgot Password?"}
-                    </span>
+                  <div className="grid gap-1">
+                    <Label className="sr-only" htmlFor="email">
+                      Confirm Password
+                    </Label>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Confirm password"
+                      value={data?.confirmPassword}
+                      onChange={handleChange}
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                    />
                   </div>
-                  {!resetPassword ? (
-                    <Button onClick={handleSignIn} disabled={loading}>
-                      Sign In with Email
-                    </Button>
-                  ) : (
-                    <Button onClick={sendResetPassword} disabled={loading}>
-                      Send Reset Email
-                    </Button>
-                  )}
+                  <div
+                    className="cursor-pointer hover:underline"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <p className="text-sm">Show passwords</p>
+                  </div>
+                  <Button onClick={() => confirmPasswords()}>
+                    Reset Password
+                  </Button>
                 </div>
               </div>
             </div>
@@ -187,4 +161,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default ResetComponent;
