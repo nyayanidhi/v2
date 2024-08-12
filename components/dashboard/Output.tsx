@@ -9,6 +9,7 @@ const Output = () => {
       try {
         const output: any = sendMailApi();
       } catch (error) {
+        setError("true");
         console.log(error);
       }
     };
