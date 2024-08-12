@@ -159,7 +159,7 @@ export const sendMailApi = async () => {
   };
 
   try {
-    const response: any = axios.post("/api/outputRoute", body);
+    const response: any = await axios.post("/api/outputRoute", body);
     localStorage.clear();
     return {
       success: true,

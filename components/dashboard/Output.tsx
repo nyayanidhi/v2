@@ -6,9 +6,10 @@ const Output = () => {
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     const sendMail = async () => {
-      const output: any = sendMailApi();
-      if (!output.success) {
-        setError(output.error);
+      try {
+        const output: any = sendMailApi();
+      } catch (error) {
+        console.log(error);
       }
     };
     sendMail();
