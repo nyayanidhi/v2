@@ -117,7 +117,7 @@ export const uploadApiFunction = async (
 
 export const sendMailApi = async () => {
   const storedResponse = localStorage.getItem("final_response");
-  const convo_key = localStorage.getItem("convo_key");
+  const convo_key = parseInt(localStorage.getItem("convo_key") || "0", 10);
 
   if (!storedResponse) {
     console.log("No data found in localStorage");
@@ -150,21 +150,16 @@ export const sendMailApi = async () => {
     session_id: string;
     converse: boolean;
     moreinfo_data: any;
-    convo_key?: any;
+    convo_key?: Number;
   } = {
     session_id: parsedResp.session_id,
     converse: parsedResp.converse,
     moreinfo_data: parsedResp.stage2,
+    convo_key: convo_key,
   };
 
-  if (parsedResp.converse) {
-    body.convo_key = convo_key ?? 0;
-  }
-
-  console.log("Sending mail with body:", body);
-
   try {
-    const response = await axios.post("/api/outputRoute", body);
+    const response: any = axios.post("/api/outputRoute", body);
     localStorage.clear();
     return {
       success: true,

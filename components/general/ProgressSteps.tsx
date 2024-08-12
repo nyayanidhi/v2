@@ -10,6 +10,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "../ui/button";
 import { useProgressStore } from "@/hooks/useModelStore";
+// @ts-ignore
 import { MoveLeft, MoveRight } from "lucide-react";
 import { uploadApiFunction } from "@/lib/apiFunctions";
 

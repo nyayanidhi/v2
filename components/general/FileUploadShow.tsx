@@ -69,7 +69,7 @@ const FileUploadShow = () => {
               className="sr-only"
               type="file"
               multiple
-              accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+              accept=".pdf"
               id="file-upload"
             />
             <label
@@ -102,7 +102,7 @@ const FileUploadShow = () => {
                   <TableCell>{file.file?.name}</TableCell>
                   <TableCell>
                     <Select
-                      onValueChange={(e) => handleSelectChange(e, index)}
+                      onValueChange={(e: any) => handleSelectChange(e, index)}
                       value={file.option}
                     >
                       <SelectTrigger className="w-[180px]">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ProgressSteps from "../general/ProgressSteps";
+// @ts-ignore
 import { Send } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { chatGenerate } from "@/lib/apiFunctions";

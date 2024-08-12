@@ -35,7 +35,7 @@ const UploadDocs = () => {
               Choose Output
             </h1>
             <Select
-              onValueChange={(value) => setOutputType(value)}
+              onValueChange={(value: string) => setOutputType(value)}
               value={outputType}
             >
               <SelectTrigger className="border border-neutral-500">
