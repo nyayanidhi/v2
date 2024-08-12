@@ -155,8 +155,11 @@ export const sendMailApi = async () => {
     session_id: parsedResp.session_id,
     converse: parsedResp.converse,
     moreinfo_data: parsedResp.stage2,
-    convo_key: 1,
   };
+
+  if (parsedResp.converse) {
+    body.convo_key = 1;
+  }
 
   try {
     const response: any = await axios.post("/api/outputRoute", body);
