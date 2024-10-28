@@ -37,6 +37,7 @@ export const OutputTypes = [
   { name: "consumer_complaint", disabled: true },
   { name: "version_consumercourts", disabled: true },
   { name: "translations", disabled: false },
+  { name: "translations_kannada", disabled: false },
   { name: "summarisations", disabled: false },
   { name: "ocr", disabled: false },
   { name: "ocr_format", disabled: false },
