@@ -14,7 +14,7 @@ export async function checkUser(emailId: string) {
       }
     );
 
-    if (resp.status !== 200) {
+    if (resp.status !== 200 && resp.status !== 201) {
       return {
         success: false,
         data: "Oops! Something didnt work",
