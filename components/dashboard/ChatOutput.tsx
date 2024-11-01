@@ -27,7 +27,10 @@ const ChatOutput = () => {
 
   const chatCallRun = async () => {
     setLoading(true);
-    if (!initFlag && inputText === "") return;
+    if (!initFlag && inputText === "") {
+      setLoading(false);
+      return;
+    }
     if (chatText.length > 0) {
       setSendText(inputText);
       setChatText([...chatText, { response: inputText, user: "user" }]);
