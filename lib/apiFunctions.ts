@@ -224,7 +224,10 @@ export const chatGenerate = async (
     console.error("Error:", error.message);
     if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
       // Return an appropriate error object for handling in ChatOutput
-      //send data to azure endpoint to store the request
+
+      //uncomment when migrate to fast api
+      //await axios.post("/api/timeoutError", { session_id: parsedResp.session_id });
+
       return {
         success: false,
         data: {
