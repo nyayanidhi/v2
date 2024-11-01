@@ -36,7 +36,7 @@ const ChatOutput = () => {
       setChatText([...chatText, { response: inputText, user: "user" }]);
       setInputText("");
     }
-    const { data, success } = await chatGenerate(
+    const { data, success, status } = await chatGenerate(
       initFlag,
       convoKey,
       historyPath,
@@ -62,10 +62,15 @@ const ChatOutput = () => {
         { response: data.ai_response, user: "AI" },
       ]);
     } else {
+
+      const errorMessage = status === 408
+        ? "Our servers are currently busy. Please try again later."
+        : "Failed to initialize chat";
+
       setChatText((prev) => [
         ...prev,
         {
-          response: "Failed to initialize chat",
+          response: errorMessage,
           user: "AI",
         },
       ]);

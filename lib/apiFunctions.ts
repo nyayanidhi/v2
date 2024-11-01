@@ -203,17 +203,39 @@ export const chatGenerate = async (
     };
   }
 
-  const response = await axios.post("/api/chatRoute", body);
-  console.log(response);
+  try {
+    const response = await axios.post("/api/chatRoute", body, {
+      timeout: 120000,
+      timeoutErrorMessage: "Request timed out after 2 minutes",
+    });
+    console.log(response);
 
-  return {
-    success: response.data.success,
-    data: response.data.data as {
-      ai_response: string;
-      continue: boolean;
-      convo_key: string;
-      history_path: string;
-    },
-    status: response.status,
-  };
+    return {
+      success: response.data.success,
+      data: response.data.data as {
+        ai_response: string;
+        continue: boolean;
+        convo_key: string;
+        history_path: string;
+      },
+      status: response.status,
+    };
+  } catch (error: any) {
+    console.error("Error:", error.message);
+    if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
+      // Return an appropriate error object for handling in ChatOutput
+      //send data to azure endpoint to store the request
+      return {
+        success: false,
+        data: {
+          ai_response: "The request timed out. Please try again later.",
+          continue: false,
+          convo_key: "",
+          history_path: "",
+        },
+        status: 408,
+      };
+    }
+    throw error; // Rethrow other errors for further handling
+  }
 };
